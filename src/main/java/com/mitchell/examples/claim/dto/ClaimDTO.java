@@ -172,59 +172,5 @@ public class ClaimDTO extends BaseClaimDTO implements ClaimRequestService
         this.vehicles = value;
     }
 
-    public static void main(String[] args)
-    {
 
-        /*
-         * { "claimNumber" : "22c9c23bac142856018ce14a26b6c299",
-         * "claimantFirstName" : "George", "claimantLastName" : "Washington",
-         * "status" : "OPEN", "lossDate" : 0, "lossInfo" : { "causeOfLoss" :
-         * "Collision", "lossDescription" : "Crashed into an apple tree",
-         * "reportedDate" : 1434290484700 }, "assignedAdjusterID" : 12345,
-         * "vehicles" : { "modelYear" : 2015, "makeDescription" : "Ford",
-         * "modelDescription" : "Mustang", "engineDescription" : "EcoBoost",
-         * "exteriorColor" : "Deep Impact Blue", "vin" : "1M8GDM9AXKP042788",
-         * "licPlate" : "NO1PRES", "licPlateState" : "VA", "licPlateExpDate" :
-         * 1434290484700, "damageDescription" :
-         * "Front end smashed in. Apple dents in roof", "mileage" : 123 } }
-         */
-
-        ClaimDTO m = new ClaimDTO();
-        m.setAssignedAdjusterID(12345);
-        m.setClaimantFirstName("George");
-        m.setClaimNumber("22c9c23bac142856018ce14a26b6c299");
-        m.setStatus("OPEN");
-        m.setLossDate(new Date());
-        m.setClaimantLastName("Washington");
-
-        LossInformationDTO lossInfo = new LossInformationDTO();
-        lossInfo.setCauseOfLoss("Collision");
-        lossInfo.setLossDescription("Crashed into an apple tree");
-        lossInfo.setReportedDate(new Date());
-        VehicleInformationDTO vehicles = new VehicleInformationDTO();
-
-        vehicles.setVin("1M8GDM9AXKP042788");
-        vehicles.setModelYear(2015);
-        vehicles.setMakeDescription("Ford");
-        vehicles.setModelDescription("Mustang");
-        vehicles.setEngineDescription("EcoBoost");
-        vehicles.setExteriorColor("Deep Impact Blue");
-        vehicles.setLicPlate("NO1PRES");
-        vehicles.setLicPlateState("VA");
-        vehicles.setLicPlateExpDate(new Date());
-        vehicles.setMileage(123);
-        vehicles.setDamageDescription("Frontend smashed in.apple dents in roof");
-        m.setVehicles(vehicles);
-        m.setLossInfo(lossInfo);
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        try
-        {
-            String json = ow.writeValueAsString(m);
-            System.out.println(json);
-        } catch (JsonProcessingException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 }

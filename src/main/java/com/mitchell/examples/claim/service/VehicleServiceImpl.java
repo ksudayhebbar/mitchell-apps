@@ -19,19 +19,19 @@ public class VehicleServiceImpl implements VehicleService
 
     @Override
     @Transactional
-    public List<HashMap<String, String>> update(VehicleInformationDTO vehicleInfoTypeDTO)
+    public void update(VehicleInformationDTO vehicleInfoDTO)
     {
         try
         {
-            vechileRepository.update(vehicleInfoTypeDTO.getExteriorColor(), vehicleInfoTypeDTO.getVin(),
-                    vehicleInfoTypeDTO.getLicPlateExpDate(), vehicleInfoTypeDTO.getClaimNumber());
-            vechileRepository.flush();
+            vechileRepository.update(vehicleInfoDTO.getExteriorColor(), vehicleInfoDTO.getVin(),
+                    vehicleInfoDTO.getLicPlateExpDate(), vehicleInfoDTO.getClaimNumber());
+            
         } catch (Exception e)
         {
 
             throw new ServiceDAOException("Update the failed");
         }
-        return null;
+
     }
 
 }

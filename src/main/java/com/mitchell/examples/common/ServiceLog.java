@@ -20,7 +20,6 @@ public class ServiceLog
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceLog.class);
 
-    
     @Around("execution(* com.mitchell.examples..*(..)) && !within(@org.springframework.context.annotation.Configuration *))")
     public Object logTimeMethod(ProceedingJoinPoint joinPoint) throws Throwable
     {

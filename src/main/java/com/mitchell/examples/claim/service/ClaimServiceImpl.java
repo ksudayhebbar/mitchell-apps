@@ -36,7 +36,7 @@ final class ClaimServiceImpl implements ClaimService
 {
 
     @Autowired
-    private ClaimRepository mitchellClaimRepository;
+    private ClaimRepository claimRepository;
 
     @Autowired
     private LookUpFactory lookUpFactory;
@@ -51,7 +51,7 @@ final class ClaimServiceImpl implements ClaimService
         {
 
             Claim mitchellClaimEntity = buildMitchellClaimEntity(requestData);
-            Claim savedClaim = mitchellClaimRepository.saveAndFlush(mitchellClaimEntity);
+            Claim savedClaim = claimRepository.saveAndFlush(mitchellClaimEntity);
             responseObject = buildResponseObject(savedClaim, ServiceStatus.SUCCESS.toString());
         } catch (Exception e)
         {
@@ -64,7 +64,7 @@ final class ClaimServiceImpl implements ClaimService
 
     private Claim buildMitchellClaimEntity(ClaimRequestService requestData)
     {
-        Claim mitchellClaim = null;
+        Claim claim = null;
         String claimNumber = requestData.getClaimNumber();
         String causeOfLoss = requestData.getLossInfo().getCauseOfLoss();
         Integer causeCode = getCauseCode(causeOfLoss);
@@ -79,15 +79,15 @@ final class ClaimServiceImpl implements ClaimService
             Date reportedDate = requestData.getLossInfo().getReportedDate();
 
             Set<Vehicle> vehicle = buildVehicle(requestData.getVehicles(), claimNumber);
-            mitchellClaim = new Claim.ClaimBuilder().ClaimNumber(claimNumber).FirstName(firstName)
-                    .CauseOfLossCode(causeCode).LastName(lastName).LossDate(lossDate).Status(status)
-                    .ReportedDate(reportedDate).Vehicle(vehicle).AssignedAdjusterID(assignedAdjusterID).createClaim();
+            claim = new Claim.ClaimBuilder().ClaimNumber(claimNumber).FirstName(firstName).CauseOfLossCode(causeCode)
+                    .LastName(lastName).LossDate(lossDate).Status(status).ReportedDate(reportedDate).Vehicle(vehicle)
+                    .AssignedAdjusterID(assignedAdjusterID).createClaim();
         } else
         {
             throw new ServiceInputValidationException("Claim number is mandatory  ");
         }
 
-        return mitchellClaim;
+        return claim;
     }
 
     private Integer getCauseCode(String causeOfLoss)
@@ -166,7 +166,7 @@ final class ClaimServiceImpl implements ClaimService
         try
         {
 
-            Claim one = mitchellClaimRepository.getOne(id);
+            Claim one = claimRepository.getOne(id);
             responseObject = buildResponseObject(one, ServiceStatus.READ.toString());
         } catch (Exception e)
         {
@@ -181,7 +181,7 @@ final class ClaimServiceImpl implements ClaimService
     public List<HashMap<String, String>> findall()
     {
 
-        List<Claim> claims = mitchellClaimRepository.findAll();
+        List<Claim> claims = claimRepository.findAll();
         HashMap<String, String> responseObject = new HashMap<String, String>();
         List<HashMap<String, String>> claimList = new ArrayList<HashMap<String, String>>();
         for (Claim mclaims : claims)
@@ -211,8 +211,8 @@ final class ClaimServiceImpl implements ClaimService
 
         try
         {
-            Claim one = mitchellClaimRepository.getOne(id);
-            mitchellClaimRepository.delete(one);
+            Claim one = claimRepository.getOne(id);
+            claimRepository.delete(one);
             responseObject = buildResponseObject(one, ServiceStatus.DELTED.toString());
         } catch (Exception e)
         {
@@ -228,7 +228,7 @@ final class ClaimServiceImpl implements ClaimService
     public List<HashMap<String, String>> findByLossDate(Date date)
     {
 
-        List<Claim> claims = mitchellClaimRepository.findByLossDate(date);
+        List<Claim> claims = claimRepository.findByLossDate(date);
         HashMap<String, String> responseObject = new HashMap<String, String>();
         List<HashMap<String, String>> claimList = new ArrayList<HashMap<String, String>>();
         for (Claim mclaims : claims)

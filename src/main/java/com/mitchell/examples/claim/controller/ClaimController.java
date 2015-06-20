@@ -67,10 +67,10 @@ public class ClaimController
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = "application/json")
-    public @ResponseBody List<HashMap<String, String>> update(@RequestBody VehicleInformationDTO vehicleInfoTypeDTO)
+    public @ResponseBody String update(@RequestBody VehicleInformationDTO vehicleInfoDTO)
     {
-        return vehicleService.update(vehicleInfoTypeDTO);
+        vehicleService.update(vehicleInfoDTO);
+        return "SUCESS";
 
     }
-
 }

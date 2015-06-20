@@ -46,7 +46,7 @@ public class ClaimControllerTest
     private MockMvc mockMvc;
 
     @Autowired
-    ClaimController mitchellClaimController;
+    ClaimController claimController;
 
     @Autowired
     private JdbcTemplate template;
@@ -55,7 +55,7 @@ public class ClaimControllerTest
     public ClaimService claimService;
 
     @Autowired
-    private ClaimRepository mitchellClaimRepository;
+    private ClaimRepository claimRepository;
 
     @Autowired
     private VehicleService vehicleServiceImpl;
@@ -63,7 +63,7 @@ public class ClaimControllerTest
     @org.junit.Before
     public void setUp() throws Exception
     {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(mitchellClaimController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(claimController).build();
         for (int i = 0; i < 5; i++)
         {
             ClaimDTO mitchellClaimTypeDTO = createClaimObject(i);
@@ -99,7 +99,7 @@ public class ClaimControllerTest
         {
             ClaimDTO mitchellClaimTypeDTO = createClaimObject(i);
             String claimNumber = mitchellClaimTypeDTO.getClaimNumber();
-            Claim mitchellClaim = mitchellClaimRepository.findOne(claimNumber);
+            Claim mitchellClaim = claimRepository.findOne(claimNumber);
             Map<String, String> singleClaim = claimService.findById(claimNumber);
             mockMvc.perform(
                     get("/claim/find/{id}", claimNumber).contentType(MediaType.APPLICATION_JSON).accept(
@@ -123,7 +123,7 @@ public class ClaimControllerTest
                 get("/claim/findall").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        List<Claim> repofindAll = mitchellClaimRepository.findAll();
+        List<Claim> repofindAll = claimRepository.findAll();
         assertEquals(5, repofindAll.size());
 
         List<HashMap<String, String>> serviceFindall = claimService.findall();
@@ -137,7 +137,7 @@ public class ClaimControllerTest
     @Transactional
     public void findByLossOfDateTest() throws Exception
     {
-        List<Claim> repofindAll = mitchellClaimRepository.findAll();
+        List<Claim> repofindAll = claimRepository.findAll();
         assertEquals(5, repofindAll.size());
 
         for (Claim claim : repofindAll)
@@ -150,7 +150,7 @@ public class ClaimControllerTest
                             .param("date", format)).andExpect(status().isOk());
             List<HashMap<String, String>> findByLossDate = claimService.findByLossDate(lossDate);
             assertEquals(1, findByLossDate.size());
-            List<Claim> findByLossDate2 = mitchellClaimRepository.findByLossDate(lossDate);
+            List<Claim> findByLossDate2 = claimRepository.findByLossDate(lossDate);
             assertEquals(1, findByLossDate2.size());
         }
 
@@ -160,7 +160,7 @@ public class ClaimControllerTest
     @Transactional
     public void updateTest()
     {
-        List<Claim> repofindAll = mitchellClaimRepository.findAll();
+        List<Claim> repofindAll = claimRepository.findAll();
         assertEquals(5, repofindAll.size());
 
         for (Claim claim : repofindAll)
@@ -176,7 +176,7 @@ public class ClaimControllerTest
             Date date = new Date();
             vehicleInfoDTO.setLicPlateExpDate(date);
             vehicleServiceImpl.update(vehicleInfoDTO);
-            Claim mitchellClaim = mitchellClaimRepository.findOne(id);
+            Claim mitchellClaim = claimRepository.findOne(id);
 
             Set<Vehicle> vehicle = mitchellClaim.getVehicle();
             for (Vehicle v : vehicle)
@@ -192,7 +192,7 @@ public class ClaimControllerTest
     @Transactional
     public void deleteTest() throws Exception
     {
-        List<Claim> repofindAll = mitchellClaimRepository.findAll();
+        List<Claim> repofindAll = claimRepository.findAll();
         assertEquals(5, repofindAll.size());
 
         for (Claim claim : repofindAll)
@@ -202,7 +202,7 @@ public class ClaimControllerTest
                     delete("/claim/delete/{id}", id).contentType(MediaType.APPLICATION_JSON).accept(
                             MediaType.APPLICATION_JSON)).andExpect(status().isOk());
         }
-        repofindAll = mitchellClaimRepository.findAll();
+        repofindAll = claimRepository.findAll();
         assertEquals(0, repofindAll.size());
 
     }
